@@ -122,6 +122,7 @@ sendButton.addEventListener("click", onSubmitHandler);
 
 const getGuest = document.getElementById("guest");
 const currentURL = window.location.href;
-const urlParams = new URLSearchParams(currentURL);
-const toParam = urlParams.get("to");
+const urlParams = new URL(currentURL);
+console.log({ urlParams });
+const toParam = url.searchParams.get("to");
 getGuest.textContent = toParam;
