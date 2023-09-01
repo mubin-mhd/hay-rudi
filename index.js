@@ -119,3 +119,9 @@ namaInput.addEventListener("change", onChangeHandler);
 nohpInput.addEventListener("change", onChangeHandler);
 ucapanTextarea.addEventListener("change", onChangeHandler);
 sendButton.addEventListener("click", onSubmitHandler);
+
+const getGuest = document.getElementById("guest");
+const currentURL = window.location.href;
+const urlParams = new URLSearchParams(currentURL);
+const toParam = urlParams.get("to");
+getGuest.textContent = toParam;
