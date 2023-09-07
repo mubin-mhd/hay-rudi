@@ -15,43 +15,60 @@ function getTimeComment(unixTime) {
   return formattedDate;
 }
 
-// make function get Data coments
+
+
+let displayedComments = 3;
+
 async function getDataComment() {
   try {
     const { data, error } = await supabase.from("comments").select("*");
     console.log("data", data);
-    function createHTMLFromData(data) {
-      const container = document.getElementById("container-comment");
 
-      data?.forEach((item) => {
-        const itemLi = document.createElement("li");
-        itemLi.className = "li list-group-item";
+    const commentsToDisplay = data.slice(0, displayedComments);
 
-        const nameUser = document.createElement("H5");
-        nameUser.className = "font-bold mb-2";
-        nameUser.textContent = item.name;
-        itemLi.appendChild(nameUser);
-
-        const greetingText = document.createElement("p");
-        greetingText.className = "text-lg font-light mb-3";
-        greetingText.textContent = item.greeting;
-        itemLi.appendChild(greetingText);
-
-        const dateComment = document.createElement("div");
-        dateComment.className = "text-dark-500 font-light";
-        dateComment.textContent = getTimeComment(item.created_at);
-        itemLi.appendChild(dateComment);
-
-        container.appendChild(itemLi);
-      });
-    }
-    createHTMLFromData(data);
+    createHTMLFromData(commentsToDisplay);
   } catch (error) {
     console.log(error);
   }
 }
 
+function createHTMLFromData(data) {
+  const container = document.getElementById("container-comment");
+  container.innerHTML = ""; 
+
+  data?.forEach((item) => {
+    const itemLi = document.createElement("li");
+    itemLi.className = "li list-group-item";
+
+    const nameUser = document.createElement("H5");
+    nameUser.className = "font-bold mb-2";
+    nameUser.textContent = item.name;
+    itemLi.appendChild(nameUser);
+
+    const greetingText = document.createElement("p");
+    greetingText.className = "text-lg font-light mb-3";
+    greetingText.textContent = item.greeting;
+    itemLi.appendChild(greetingText);
+
+    const dateComment = document.createElement("div");
+    dateComment.className = "text-dark-500 font-light";
+    dateComment.textContent = getTimeComment(item.created_at);
+    itemLi.appendChild(dateComment);
+
+    container.appendChild(itemLi);
+  });
+}
+
+function showAllGreeting() {
+  displayedComments = Infinity; 
+  getDataComment(); 
+}
+
+const showAllComment = document.getElementById("showAll");
+showAllComment.addEventListener("click", showAllGreeting);
+
 getDataComment();
+
 
 const form = document.getElementById("greeting-form");
 const namaInput = document.getElementById("nama");
